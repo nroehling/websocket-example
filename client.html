@@ -1,41 +1,84 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Websocket example client</title>
+    <title>Websocket Example Client</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin-top: 60px;
+        }
+
+        #status {
+            padding: .5em;
+            top: 0;
+            position: absolute;
+            width: 98%;
+        }
+    </style>
 </head>
 <body>
-    <button onclick="btnClick()">Send Test Message</button>
+<p>Your client ID: <code id="uuid"></code></p>
+<button onclick="btnClick()">Say Hello to other Clients</button>
+<p id="status"></p>
 </body>
 </html>
-<script type="application/javascript">
+<script>
+
+    const $uuid = document.getElementById('uuid'),
+        $status = document.getElementById('status');
+
     //function to generate a unique id for the client.
     function uuidv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
     }
+
     const id = uuidv4();
-    const url = 'ws://localhost:8080';
+    const url = 'ws://localhost:8080'; // as defined in server.js
+
     const connection = new WebSocket(url);
 
     connection.onopen = () => {
-    console.log("Connection to Websocket Server established!");
+        console.log("Connection to Websocket Server established!");
     };
 
     connection.onmessage = (e) => {
-    console.log("New message: " + e.data);
+        let data = JSON.parse(e.data);
+        if(data.senderId === id) {
+            $status.innerText = 'Your message was sent.';
+        } else {
+            $status.innerHTML = 'Received Message from ' + data.senderId + ':<strong>' + data.body + '</strong>';
+        }
     };
 
     connection.onclose = () => {
-    console.log("Connection closed!");
+        console.log("Connection closed!");
     };
 
     connection.onerror = (error) => {
-    console.log('An error occured:' + error);
+        console.log('An error occured:' + error);
     };
 
-    function btnClick () {
-        connection.send("Hello from Client " + id);
+    function btnClick() {
+        connection.send(JSON.stringify({
+            senderId: id,
+            body: "Hello from a happy Client!"
+        }));
     }
+
+
+    // Check if websocket connection is established after 1.5s
+    window.setTimeout(function () {
+        if (3 === connection.readyState) {
+            $status.innerText = 'Connection failed!';
+            $status.style.backgroundColor = 'red';
+        } else {
+            $status.innerText = 'Connection OK';
+            $status.style.backgroundColor = '#83e283';
+            $uuid.innerText = id;
+        }
+    }, 1500);
 
 </script>

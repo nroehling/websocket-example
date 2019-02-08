@@ -14,10 +14,9 @@ wss.on('connection', ws => {
             }
         });
     });
-    //ws.send('ho!');
 
     ws.on('error', error => {
-        console.log("An error occured " + error);
+        console.log("An error occurred " + error);
     });
 
     ws.on('close', () => {
