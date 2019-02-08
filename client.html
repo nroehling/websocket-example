@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>Websocket example client</title>
+</head>
+<body>
+    <button onclick="btnClick()">Send Test Message</button>
+</body>
+</html>
+<script type="application/javascript">
+    const url = 'ws://localhost:8080';
+    const connection = new WebSocket(url);
+
+    connection.onopen = () => {
+    console.log("Connection to Websocket Server established!");
+    };
+
+    connection.onmessage = (e) => {
+    console.log("New message: " + e.data);
+    };
+
+    connection.onclose = () => {
+    console.log("Connection closed!");
+    };
+
+    connection.onerror = (error) => {
+    console.log('An error occured:' + error);
+    };
+
+    function btnClick () {
+        connection.send("Hello from Client !!!");
+    }
+
+</script>

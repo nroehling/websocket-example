@@ -1,0 +1,24 @@
+{
+  "name": "websocket-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecoparts/websocket-example.git"
+  },
+  "author": "niklas röhling",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ecoparts/websocket-example/issues"
+  },
+  "homepage": "https://github.com/ecoparts/websocket-example#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "requirejs": "^2.3.6",
+    "ws": "^6.1.3"
+  }
+}
