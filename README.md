@@ -19,7 +19,7 @@ npm install
 ```
 
 ## Usage
-In project directory and a Terminal
+In project directory and a Terminal, to start the websocket server
 ```
 npm start
 ```
